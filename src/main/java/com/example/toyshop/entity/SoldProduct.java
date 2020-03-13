@@ -5,20 +5,24 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "removed_products")
+@Table(name = "sold_product")
 
-public class RemovedProduct {
+public class SoldProduct {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(generator = "REMOVED_PRODUCT_GENERATOR", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "REMOVED_PRODUCT_GENERATOR", allocationSize = 1, sequenceName = "removed_product_id_seq")
+    @GeneratedValue(generator = "SOLD_PRODUCT_GENERATOR", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "SOLD_PRODUCT_GENERATOR", allocationSize = 1, sequenceName = "sold_product_id_seq")
     private long id;
+
+    @Column(name = "order_number")
+    private long orderNumber;
 
     @Column(name = "product_id")
     private long productId;
 
-    @Column(name = "storage_removed_date")
-    private java.sql.Date storageRemovedDate;
+    @Column(name = "sold_date")
+    private java.sql.Date soldDate;
+
 
     @Column(name = "quantity")
     private int quantity;
@@ -26,12 +30,12 @@ public class RemovedProduct {
     @Column(name = "product_location")
     private String productLocation;
 
-    public RemovedProduct(){}
+    public SoldProduct(){}
 
-    public RemovedProduct(long id, long productId,  java.sql.Date storageRemovedDate,  int quantity, String productLocation) {
+    public SoldProduct(long id, long productId,  java.sql.Date soldDate,  int quantity, String productLocation, long orderNumber) {
         this.id = id;
         this.productId = productId;
-        this.storageRemovedDate = storageRemovedDate;
+        this.soldDate = soldDate;
         this.quantity = quantity;
         this.productLocation = productLocation;
     }
@@ -52,12 +56,12 @@ public class RemovedProduct {
         this.productId = productId;
     }
 
-    public java.sql.Date getStorageRemovedDate() {
-        return storageRemovedDate;
+    public java.sql.Date getSoldDate() {
+        return soldDate;
     }
 
-    public void setStorageRemovedDate(java.sql.Date storageRemovedDate) {
-        this.storageRemovedDate = storageRemovedDate;
+    public void setSoldDate(java.sql.Date soldDate) {
+        this.soldDate = soldDate;
     }
 
 
@@ -78,6 +82,13 @@ public class RemovedProduct {
         this.productLocation = productLocation;
     }
 
+    public long getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(long orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 }
 
 

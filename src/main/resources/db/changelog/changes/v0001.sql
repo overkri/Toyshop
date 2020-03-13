@@ -28,7 +28,6 @@ CREATE TABLE "removed_products" (
                         storage_removed_date    DATE,
                         quantity                int,
                         product_location        TEXT,
-                        status                  TEXT,
                         CONSTRAINT removed_product_pk PRIMARY KEY (id)
 ) WITH (
       OIDS=FALSE
@@ -46,3 +45,16 @@ CREATE TABLE "added_products" (
       OIDS=FALSE
     );
 CREATE SEQUENCE "added_product_id_seq" START 1;
+
+CREATE TABLE "sold_products" (
+                        id                      int8,
+                        order_number            int8,
+                        product_id              int8,
+                        sold_date               DATE,
+                        quantity                int,
+                        product_location        TEXT,
+                        CONSTRAINT sold_product_pk PRIMARY KEY (id)
+) WITH (
+      OIDS=FALSE
+    );
+CREATE SEQUENCE "sold_product_id_seq" START 1;
