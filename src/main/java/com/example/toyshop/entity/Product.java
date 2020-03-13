@@ -21,8 +21,6 @@ public class Product {
     @Enumerated(value = EnumType.STRING)
     private ProductType type;
 
-    @Column(name = "quantity")
-    private int quantity;
 
     @Column(name = "cost")
     private int cost;
@@ -30,11 +28,10 @@ public class Product {
 
     public Product(){}
 
-    public Product(long id, String productName, ProductType type, int quantity, int cost) {
+    public Product(long id, String productName, ProductType type, int cost) {
         this.id = id;
         this.productName = productName;
         this.type = type;
-        this.quantity = quantity;
         this.cost = cost;
     }
 
@@ -54,21 +51,12 @@ public class Product {
         this.productName = productName;
     }
 
-
     public ProductType getType() {
         return type;
     }
 
     public void setType(ProductType type) {
         this.type = type;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public int getCost() {

@@ -2,7 +2,6 @@ CREATE TABLE "products" (
                         id                      int8,
                         product_name            TEXT,
                         type                    TEXT,
-                        quantity                int,
                         cost                    int,
                         CONSTRAINT product_pk PRIMARY KEY (id)
 ) WITH (
