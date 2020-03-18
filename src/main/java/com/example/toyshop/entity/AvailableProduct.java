@@ -14,19 +14,21 @@ public class AvailableProduct {
     @SequenceGenerator(name = "AVAILABLE_PRODUCT_GENERATOR", allocationSize = 1, sequenceName = "available_product_id_seq")
     private long id;
 
-    @Column(name = "product_id")
-    private long productId;
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "product_location")
-    private String productLocation;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_location_id")
+    private Location productLocation;
 
     public AvailableProduct (){}
 
-    public AvailableProduct(long id, long productId,  int quantity,  String productLocation) {
-        this.productId = productId;
+    public AvailableProduct(long id, Product product,  int quantity,  Location productLocation) {
+        this.product = product;
         this.id = id;
         this.quantity = quantity;
         this.productLocation = productLocation;
@@ -40,12 +42,12 @@ public class AvailableProduct {
         this.id = id;
     }
 
-    public long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setProduct(Product productId) {
+        this.product = productId;
     }
 
     public int getQuantity() {
@@ -56,13 +58,12 @@ public class AvailableProduct {
         this.quantity = quantity;
     }
 
-
-    public String getProductLocation() {
+    public Location getProductLocation() {
         return productLocation;
     }
 
-    public void setProductLocation(String product_location) {
-        this.productLocation = product_location;
+    public void setProductLocation(Location productLocation) {
+        this.productLocation = productLocation;
     }
 }
 

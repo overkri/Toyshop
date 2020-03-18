@@ -4,6 +4,6 @@ public enum ProductType {
     DOLL,
     ANIMAL,
     EDUCATIONAL,
-    RADIOCAR,
-    ACTIONFIGURE
+    RADIO_CAR,
+    ACTION_FIGURE
 }

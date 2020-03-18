@@ -3,6 +3,7 @@ CREATE TABLE "products" (
                         product_name            TEXT,
                         type                    TEXT,
                         cost                    int,
+
                         CONSTRAINT product_pk PRIMARY KEY (id)
 ) WITH (
       OIDS=FALSE
@@ -10,10 +11,10 @@ CREATE TABLE "products" (
 CREATE SEQUENCE "product_id_seq" START 1;
 
 CREATE TABLE "available_products" (
-                        id                      int8,
+                        id                      int8 NOT NULL UNIQUE,
                         product_id              int8,
                         quantity                int,
-                        product_location        TEXT,
+                        product_location_id     int8,
                         CONSTRAINT available_product_pk PRIMARY KEY (id)
 ) WITH (
       OIDS=FALSE
@@ -21,39 +22,27 @@ CREATE TABLE "available_products" (
 
 CREATE SEQUENCE "available_product_id_seq" START 1;
 
-CREATE TABLE "removed_products" (
-                        id                      int8,
+CREATE TABLE "changed_products" (
+                        id                      int8 NOT NULL UNIQUE,
                         product_id              int8,
-                        storage_removed_date    DATE,
+                        date                    DATE,
                         quantity                int,
-                        product_location        TEXT,
-                        CONSTRAINT removed_product_pk PRIMARY KEY (id)
+                        product_location_id     int8,
+                        status                  TEXT,
+                        invoice_id              int8,
+                        CONSTRAINT changed_product_pk PRIMARY KEY (id)
 ) WITH (
       OIDS=FALSE
     );
-CREATE SEQUENCE "removed_product_id_seq" START 1;
+CREATE SEQUENCE "changed_product_id_seq" START 1;
 
-CREATE TABLE "added_products" (
-                        id                      int8,
-                        product_id              int8,
-                        storage_added_date      DATE,
-                        quantity                int,
-                        product_location        TEXT,
-                        CONSTRAINT added_product_pk PRIMARY KEY (id)
+CREATE TABLE "locations"(
+                        id                      int8 NOT NULL UNIQUE,
+                        location_name           TEXT,
+                        CONSTRAINT location_pk PRIMARY KEY (id)
 ) WITH (
-      OIDS=FALSE
-    );
-CREATE SEQUENCE "added_product_id_seq" START 1;
+    OIDS=FALSE
+);
 
-CREATE TABLE "sold_products" (
-                        id                      int8,
-                        order_number            int8,
-                        product_id              int8,
-                        sold_date               DATE,
-                        quantity                int,
-                        product_location        TEXT,
-                        CONSTRAINT sold_product_pk PRIMARY KEY (id)
-) WITH (
-      OIDS=FALSE
-    );
-CREATE SEQUENCE "sold_product_id_seq" START 1;
+CREATE SEQUENCE "location_id_seq" START 1;
+

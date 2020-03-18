@@ -2,6 +2,7 @@ package com.example.toyshop.entity;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -21,14 +22,13 @@ public class Product {
     @Enumerated(value = EnumType.STRING)
     private ProductType type;
 
-
     @Column(name = "cost")
     private int cost;
 
 
     public Product(){}
 
-    public Product(long id, String productName, ProductType type, int cost) {
+    public Product( long id,String productName, ProductType type, int cost) {
         this.id = id;
         this.productName = productName;
         this.type = type;
@@ -65,6 +65,18 @@ public class Product {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Product other = (Product) obj;
+        return Objects.equals(id, other.getId());
     }
 
 }
