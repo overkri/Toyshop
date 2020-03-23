@@ -10,4 +10,5 @@ public class Invoice  {
     public Location location;
     public Date date;
     public long id;
+    public int sum;
 }

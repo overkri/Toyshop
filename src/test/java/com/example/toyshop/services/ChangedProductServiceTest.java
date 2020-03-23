@@ -1,12 +1,10 @@
 package com.example.toyshop.services;
 
 import com.example.toyshop.entity.*;
-import com.example.toyshop.repository.AvailableProductRepository;
-import com.example.toyshop.repository.ChangedProductRepository;
-import com.example.toyshop.repository.LocationRepository;
-import com.example.toyshop.repository.ProductRepository;
+import com.example.toyshop.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.data.domain.Sort;
 
 import java.sql.Date;
@@ -16,13 +14,11 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ChangedProductServiceTest {
 
     private static final long ID = 1;
-    private static final long CHANGED_ID = 2;
     private static final String PRODUCT_NAME = "RED DOLL";
     private static final int QUANTITY = 10;
     private static final int CHANGED_QUANTITY = 20;
@@ -38,9 +34,6 @@ class ChangedProductServiceTest {
     private static final ChangeStatus CHANGED_STATUS = ChangeStatus.SOLD;
 
 
-
-
-
     static ChangedProductService changedProductService;
 
     @BeforeEach()
@@ -49,8 +42,8 @@ class ChangedProductServiceTest {
         AvailableProductRepository availableProductRepository = mock(AvailableProductRepository.class);
         ProductRepository productRepository = mock(ProductRepository.class);
         LocationRepository locationRepository = mock(LocationRepository.class);
-
-        changedProductService = new ChangedProductService(changedProductRepository,availableProductRepository, locationRepository, productRepository );
+        SoldInvoiceInfoRepository soldInvoiceInfoRepository = mock(SoldInvoiceInfoRepository.class);
+        changedProductService = new ChangedProductService(changedProductRepository,availableProductRepository, locationRepository, productRepository,soldInvoiceInfoRepository );
         ChangedProduct changedProduct = getChangedProduct();
         List<ChangedProduct> changedProducts = new ArrayList<>();
         when(changedProductRepository.findById(ID)).thenReturn(java.util.Optional.of(changedProduct));
@@ -90,6 +83,11 @@ class ChangedProductServiceTest {
     @Test
     void getChangedProductById() {
         ChangedProduct changedProduct = changedProductService.getChangedProductById(ID);
+        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+        ChangedProductService changedProductServiceOther = mock(ChangedProductService.class);
+        ChangedProduct changedProductOther = changedProductServiceOther.getChangedProductById(ID);
+        verify(changedProductServiceOther).getChangedProductById(captor.capture());
+        assertEquals(ID, captor.getValue());
         Product newProduct = new Product();
         Location newLocation = new Location();
         Date date = new Date(DATE);
@@ -112,6 +110,11 @@ class ChangedProductServiceTest {
     void addChangedProduct() {
         ChangedProduct newProduct = getChangedProduct();
         ChangedProduct product = changedProductService.addChangedProduct(newProduct);
+        ArgumentCaptor<ChangedProduct> captor = ArgumentCaptor.forClass(ChangedProduct.class);
+        ChangedProductService changedProductServiceOther = mock(ChangedProductService.class);
+        changedProductServiceOther.addChangedProduct(newProduct);
+        verify(changedProductServiceOther).addChangedProduct(captor.capture());
+        assertEquals(newProduct, captor.getValue());
         assertEquals(newProduct.getId(), product.getId());
         assertEquals(newProduct.getQuantity(), product.getQuantity());
         assertEquals(newProduct.getProductId(), product.getProductId());
@@ -143,6 +146,13 @@ class ChangedProductServiceTest {
         updatedProduct.setInvoiceId(INVOICE_ID);
         updatedProduct.setStatus(CHANGED_STATUS);
         ChangedProduct changedProduct = changedProductService.updateChangedProduct(ID, updatedProduct);
+        ArgumentCaptor<ChangedProduct> captor = ArgumentCaptor.forClass(ChangedProduct.class);
+        ArgumentCaptor<Long> number = ArgumentCaptor.forClass(Long.class);
+        ChangedProductService changedProductServiceOther = mock(ChangedProductService.class);
+        ChangedProduct changedProductOther = changedProductServiceOther.updateChangedProduct(ID, updatedProduct);
+        verify(changedProductServiceOther).updateChangedProduct(number.capture(),captor.capture());
+        assertEquals(updatedProduct, captor.getValue());
+        assertEquals(ID, number.getValue());
         assertEquals(changedProduct.getId(), updatedProduct.getId());
         assertEquals(changedProduct.getProductId(), updatedProduct.getProductId());
         assertEquals(changedProduct.getQuantity(), updatedProduct.getQuantity());

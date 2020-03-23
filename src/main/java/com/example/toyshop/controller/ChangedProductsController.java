@@ -2,6 +2,7 @@ package com.example.toyshop.controller;
 
 import com.example.toyshop.DTO.Invoice;
 import com.example.toyshop.entity.ChangedProduct;
+import com.example.toyshop.entity.Product;
 import com.example.toyshop.exceptions.IdNotFoundException;
 import com.example.toyshop.services.ChangedProductService;
 import io.swagger.annotations.*;
@@ -79,6 +80,13 @@ public class ChangedProductsController {
     @PostMapping("/confirm-remove")
     public boolean confirmRemove(@ApiParam(value = "Removed product from invoice in available products database table", required = true) @Valid @RequestBody long invoiceID){
         return changedProductService.confirmRemove(invoiceID);
+    }
+
+    @Transactional
+    @ApiOperation(value = "Cancel remove")
+    @PostMapping("/cancel-remove")
+    public Map<Long, Boolean> cancelRemove(@ApiParam(value = "Removed product from invoice in available products database table", required = true) @Valid @RequestBody List<Product> productList, long invoiceID){
+        return changedProductService.cancelRemove(productList, invoiceID);
     }
 
     @Transactional

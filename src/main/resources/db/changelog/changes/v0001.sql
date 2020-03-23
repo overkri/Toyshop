@@ -46,3 +46,15 @@ CREATE TABLE "locations"(
 
 CREATE SEQUENCE "location_id_seq" START 1;
 
+CREATE TABLE "sold_invoice_info"(
+                        id                      int8 NOT NULL UNIQUE,
+                        date                    DATE,
+                        invoice_id              int8,
+                        sum                     int,
+                        product_location_id     int8
+) WITH (
+    OIDS=FALSE
+);
+
+CREATE SEQUENCE "sold_info_id_seq" START 1;
+

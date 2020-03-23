@@ -3,9 +3,9 @@ package com.example.toyshop.services;
 import com.example.toyshop.entity.Product;
 import com.example.toyshop.entity.ProductType;
 import com.example.toyshop.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
@@ -14,8 +14,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ProductServiceTest {
     private static final long ID = 1;
@@ -59,6 +58,11 @@ class ProductServiceTest {
     @Test
     void getProductById() {
         Product product = productService.getProductById(ID);
+        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+        ProductService productServiceOther = mock(ProductService.class);
+        Product productOther = productServiceOther.getProductById(ID);
+        verify(productServiceOther).getProductById(captor.capture());
+        assertEquals(ID, captor.getValue());
         assertEquals(ID, product.getId());
         assertEquals(COST, product.getCost());
         assertEquals(TYPE, product.getType());
@@ -69,6 +73,11 @@ class ProductServiceTest {
     void addProduct() {
         Product newProduct = getProduct();
         Product product = productService.addProduct(newProduct);
+        ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
+        ProductService productServiceOther = mock(ProductService.class);
+        productServiceOther.addProduct(newProduct);
+        verify(productServiceOther).addProduct(captor.capture());
+        assertEquals(newProduct, captor.getValue());
         assertEquals(newProduct.getId(), product.getId());
         assertEquals(newProduct.getCost(), product.getCost());
         assertEquals(newProduct.getType(), product.getType());
@@ -85,6 +94,13 @@ class ProductServiceTest {
         updatedProduct.setProductName(NAME);
         updatedProduct.setId(ID);
         Product changedProduct = productService.updateProduct(ID, updatedProduct);
+        ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
+        ArgumentCaptor<Long> number = ArgumentCaptor.forClass(Long.class);
+        ProductService productServiceOther = mock(ProductService.class);
+        Product productOther = productServiceOther.updateProduct(ID, updatedProduct);
+        verify(productServiceOther).updateProduct(number.capture(),captor.capture());
+        assertEquals(updatedProduct, captor.getValue());
+        assertEquals(ID, number.getValue());
         assertEquals(changedProduct.getId(), product.getId());
         assertEquals(changedProduct.getCost(), updatedProduct.getCost());
         assertEquals(changedProduct.getType(), updatedProduct.getType());

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface AvailableProductRepository extends PagingAndSortingRepository<AvailableProduct, Long> {
 
-    public Optional<AvailableProduct> findByProductAndProductLocation(
+    Optional<AvailableProduct> findByProductAndProductLocation(
             Product product,
             Location productLocation
     );

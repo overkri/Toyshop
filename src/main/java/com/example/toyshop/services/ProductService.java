@@ -4,6 +4,7 @@ import com.example.toyshop.entity.Product;
 import com.example.toyshop.exceptions.IdNotFoundException;
 import com.example.toyshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +59,7 @@ public class ProductService {
      */
     public Product updateProduct(Long productId,Product productDetails)  {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IdNotFoundException(MESSAGE + productId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + productId));
         product.setProductName(productDetails.getProductName());
         product.setType(productDetails.getType());
         product.setCost(productDetails.getCost());

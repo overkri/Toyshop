@@ -13,11 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 
-@RestController
-
-@RequestMapping("/api/v3")
-
-@Api(value = "Product Management System")
 
 public class ProductRestController {
 
