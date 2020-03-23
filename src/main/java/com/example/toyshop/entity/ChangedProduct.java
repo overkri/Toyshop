@@ -58,13 +58,15 @@ public class ChangedProduct {
     public void setId(long id) {
         this.id = id;
     }
-    public Product getProductId() {
+
+    public Product getProduct() {
         return product;
     }
 
-    public void setProductId(Product productId) {
-        this.product = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
+
     public Date getDate() {
         return date;
     }

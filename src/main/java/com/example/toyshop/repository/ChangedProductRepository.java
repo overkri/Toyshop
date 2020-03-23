@@ -12,7 +12,7 @@ import java.util.List;
 public interface ChangedProductRepository extends PagingAndSortingRepository<ChangedProduct, Long> {
     List<ChangedProduct> findAllByInvoiceId(long invoiceId);
 
-    <Optional> ChangedProduct findByProductIdAndInvoiceId(Product product, long invoiceId);
+    <Optional> ChangedProduct findByProductAndInvoiceId(Product product, long invoiceId);
 
     @Query("SELECT p.productLocation.locationName as locationName, p.product.productName as productName, p.date as date, p.quantity as quantity, p.product.cost as cost FROM ChangedProduct p  WHERE p.status = 'SOLD' ORDER BY p.productLocation.id ASC")
 

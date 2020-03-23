@@ -93,7 +93,7 @@ public class ChangedProductService {
         changedProduct.setDate(changedProductDetails.getDate());
         changedProduct.setProductLocation(changedProductDetails.getProductLocation());
         changedProduct.setQuantity(changedProductDetails.getQuantity());
-        changedProduct.setProductId(changedProductDetails.getProductId());
+        changedProduct.setProduct(changedProductDetails.getProduct());
         changedProduct.setInvoiceId(changedProductDetails.getInvoiceId());
         changedProduct.setStatus(changedProductDetails.getStatus());
         return changedProductRepository.save(changedProduct);
@@ -135,7 +135,7 @@ public class ChangedProductService {
             changedProduct.setDate(invoice.date);
             changedProduct.setProductLocation(invoice.location);
             changedProduct.setQuantity(element.getQuantity());
-            changedProduct.setProductId(element.getProduct());
+            changedProduct.setProduct(element.getProduct());
             changedProduct.setStatus(ChangeStatus.NOT_REMOVED);
             changedProduct.setInvoiceId(invoice.id);
             changedProductRepository.save(changedProduct);
@@ -153,7 +153,7 @@ public class ChangedProductService {
     public Map<Long, Boolean> cancelRemove(List<Product> productList, long invoiceID){
         Map<Long, Boolean> response = new HashMap<>();
         for (Product product:productList) {
-           ChangedProduct changedProduct = changedProductRepository.findByProductIdAndInvoiceId(product, invoiceID);
+           ChangedProduct changedProduct = changedProductRepository.findByProductAndInvoiceId(product, invoiceID);
            changedProductRepository.delete(changedProduct);
            response.put(product.getId(), true);
         }
@@ -172,7 +172,7 @@ public class ChangedProductService {
         List<AvailableProduct> availableList = new ArrayList<>();
         List<ChangedProduct> changedProducts = changedProductRepository.findAllByInvoiceId(invoiceID);
         changedProducts.forEach(changedProduct -> {
-            AvailableProduct availableProduct = availableProductRepository.findByProductAndProductLocation(changedProduct.getProductId(), changedProduct.getProductLocation())
+            AvailableProduct availableProduct = availableProductRepository.findByProductAndProductLocation(changedProduct.getProduct(), changedProduct.getProductLocation())
                     .orElseThrow(() -> new IdNotFoundException(MESSAGE + changedProduct.getId()));
             availableProduct.setQuantity(availableProduct.getQuantity() - changedProduct.getQuantity());
             availableList.add(availableProduct);
@@ -208,7 +208,7 @@ public class ChangedProductService {
             changedProduct.setDate(invoice.date);
             changedProduct.setProductLocation(invoice.location);
             changedProduct.setQuantity(element.getQuantity());
-            changedProduct.setProductId(element.getProduct());
+            changedProduct.setProduct(element.getProduct());
             changedProduct.setStatus(ChangeStatus.ADDED);
             changedProductRepository.save(changedProduct);
             AvailableProduct availableProduct = availableProductRepository.findByProductAndProductLocation(element.getProduct(), invoice.location)
@@ -239,7 +239,7 @@ public class ChangedProductService {
             changedProduct.setDate(invoice.date);
             changedProduct.setProductLocation(invoice.location);
             changedProduct.setQuantity(element.getQuantity());
-            changedProduct.setProductId(element.getProduct());
+            changedProduct.setProduct(element.getProduct());
             changedProduct.setStatus(ChangeStatus.SOLD);
             AvailableProduct availableProduct = availableProductRepository.findByProductAndProductLocation(element.getProduct(), invoice.location)
                     .orElseThrow(() -> new IdNotFoundException(MESSAGE + element.getProduct().getId()));

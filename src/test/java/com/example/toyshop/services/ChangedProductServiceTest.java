@@ -64,7 +64,7 @@ class ChangedProductServiceTest {
         location.setLocationName(LOCATION_NAME);
         changedProduct.setQuantity(QUANTITY);
         changedProduct.setId(ID);
-        changedProduct.setProductId(product);
+        changedProduct.setProduct(product);
         changedProduct.setProductLocation(location);
         changedProduct.setStatus(STATUS);
         changedProduct.setInvoiceId(INVOICE_ID);
@@ -98,7 +98,7 @@ class ChangedProductServiceTest {
         newLocation.setId(LOCATION_ID);
         newLocation.setLocationName(LOCATION_NAME);
         assertEquals(ID, changedProduct.getId());
-        assertEquals(newProduct, changedProduct.getProductId());
+        assertEquals(newProduct, changedProduct.getProduct());
         assertEquals(newLocation, changedProduct.getProductLocation());
         assertEquals(QUANTITY, changedProduct.getQuantity());
         assertEquals(STATUS, changedProduct.getStatus());
@@ -117,7 +117,7 @@ class ChangedProductServiceTest {
         assertEquals(newProduct, captor.getValue());
         assertEquals(newProduct.getId(), product.getId());
         assertEquals(newProduct.getQuantity(), product.getQuantity());
-        assertEquals(newProduct.getProductId(), product.getProductId());
+        assertEquals(newProduct.getProduct(), product.getProduct());
         assertEquals(newProduct.getProductLocation(), product.getProductLocation());
         assertEquals(newProduct.getInvoiceId(), product.getInvoiceId());
         assertEquals(newProduct.getStatus(), product.getStatus());
@@ -140,7 +140,7 @@ class ChangedProductServiceTest {
         newLocation.setLocationName(LOCATION_NAME);
         updatedProduct.setProductLocation(newLocation);
         updatedProduct.setQuantity(CHANGED_QUANTITY);
-        updatedProduct.setProductId(newProduct);
+        updatedProduct.setProduct(newProduct);
         updatedProduct.setId(ID);
         updatedProduct.setDate(date);
         updatedProduct.setInvoiceId(INVOICE_ID);
@@ -154,7 +154,7 @@ class ChangedProductServiceTest {
         assertEquals(updatedProduct, captor.getValue());
         assertEquals(ID, number.getValue());
         assertEquals(changedProduct.getId(), updatedProduct.getId());
-        assertEquals(changedProduct.getProductId(), updatedProduct.getProductId());
+        assertEquals(changedProduct.getProduct(), updatedProduct.getProduct());
         assertEquals(changedProduct.getQuantity(), updatedProduct.getQuantity());
         assertEquals(changedProduct.getDate(), updatedProduct.getDate());
         assertEquals(changedProduct.getInvoiceId(), updatedProduct.getInvoiceId());
