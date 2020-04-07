@@ -1,11 +1,14 @@
 package com.example.toyshop.entity;
 
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 
 @Entity
+@Document(indexName = "product")
 @Table(name = "products")
 
 public class Product {

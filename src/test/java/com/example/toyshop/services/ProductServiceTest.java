@@ -3,6 +3,7 @@ package com.example.toyshop.services;
 import com.example.toyshop.entity.Product;
 import com.example.toyshop.entity.ProductType;
 import com.example.toyshop.repository.ProductRepository;
+import com.example.toyshop.elasticSearchRepository.ProductSearchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,7 +32,8 @@ class ProductServiceTest {
     @BeforeEach()
      void init(){
         ProductRepository productRepository = mock(ProductRepository.class);
-        productService = new ProductService(productRepository);
+        ProductSearchRepository productSearchRepository = mock(ProductSearchRepository.class);
+        productService = new ProductService(productRepository, productSearchRepository);
         Product product = getProduct();
         List<Product> products = new ArrayList<>();
         when(productRepository.findById(ID)).thenReturn(java.util.Optional.of(product));

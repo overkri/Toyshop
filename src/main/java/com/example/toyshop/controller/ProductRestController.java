@@ -1,6 +1,7 @@
 package com.example.toyshop.controller;
 
 import com.example.toyshop.entity.Product;
+import com.example.toyshop.entity.ProductType;
 import com.example.toyshop.exceptions.IdNotFoundException;
 import com.example.toyshop.services.ProductService;
 import io.swagger.annotations.*;
@@ -12,11 +13,16 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+@RestController
 
+@RequestMapping("/api/v2")
+
+@Api(value = "Product Management System")
 
 public class ProductRestController {
 
     private final ProductService productService;
+
 
     public ProductRestController(ProductService productService) {
         this.productService = productService;
@@ -73,5 +79,17 @@ public class ProductRestController {
     public Map<String, Boolean> deleteProduct(
             @ApiParam(value = "Product Id from which object will be deleted from database table", required = true) @PathVariable(value = "id") Long productId) {
         return productService.deleteProduct(productId);
+    }
+
+    @ApiOperation(value = "Find product by name")
+    @GetMapping("find-by-name")
+    public List<Product> findByName(String productName){
+        return productService.findProductsByName(productName);
+    }
+
+    @ApiOperation(value = "Find product by name")
+    @GetMapping("find-by-type")
+    public List<Product> findByName(ProductType type){
+        return productService.findProductsBType(type);
     }
 }

@@ -1,8 +1,10 @@
 package com.example.toyshop.services;
 
 import com.example.toyshop.entity.Product;
+import com.example.toyshop.entity.ProductType;
 import com.example.toyshop.exceptions.IdNotFoundException;
 import com.example.toyshop.repository.ProductRepository;
+import com.example.toyshop.elasticSearchRepository.ProductSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.lang.NonNull;
@@ -18,11 +20,14 @@ public class ProductService {
     public static final String MESSAGE = "Product was not found for this id :: ";
 
     @Autowired
-    public ProductService(@NonNull ProductRepository productRepository) {
+    public ProductService(@NonNull ProductRepository productRepository, @NonNull ProductSearchRepository productSearchRepository) {
         this.productRepository = productRepository;
+        this.productSearchRepository = productSearchRepository;
     }
 
     private final ProductRepository productRepository;
+
+    private final ProductSearchRepository productSearchRepository;
 
     /**
      * Returns list of all products from database table
@@ -48,6 +53,7 @@ public class ProductService {
      * @return saved product to further put it to response entity
      */
     public Product addProduct(Product product) {
+        productSearchRepository.save(product);
         return productRepository.save(product);
     }
 
@@ -63,6 +69,7 @@ public class ProductService {
         product.setProductName(productDetails.getProductName());
         product.setType(productDetails.getType());
         product.setCost(productDetails.getCost());
+        productSearchRepository.save(product);
         return productRepository.save(product);
 
     }
@@ -77,8 +84,27 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IdNotFoundException(MESSAGE + productId));
         productRepository.delete(product);
+        productSearchRepository.delete(product);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    public List<Product> findProductsByName(String name){
+        return productSearchRepository.findByProductName(name);
+    }
+
+    /**
+     *
+     * @param type
+     * @return
+     */
+    public List<Product> findProductsBType(ProductType type){
+        return productSearchRepository.findByType(type);
     }
 }
